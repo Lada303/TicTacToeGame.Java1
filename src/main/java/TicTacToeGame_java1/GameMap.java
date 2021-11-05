@@ -1,6 +1,7 @@
 package TicTacToeGame_java1;
 
 public class GameMap {
+
     private final Cell[][] map;
 
     protected GameMap (int x, int y) {
@@ -109,10 +110,12 @@ public class GameMap {
             printHorizontalLine();
         }
     }
+
     private void printHorizontalLine() {
         for (int i = 0; i <= map[1].length; i++) {
             System.out.print("----");
         }
         System.out.println();
     }
+
 }

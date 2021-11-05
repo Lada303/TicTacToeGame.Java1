@@ -1,6 +1,7 @@
 package TicTacToeGame_java1;
 
 public class Cell {
+
     protected final int columnNumber;
     protected final int rowNumber;
     private Dots dot;
