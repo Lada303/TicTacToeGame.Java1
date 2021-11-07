@@ -21,6 +21,7 @@ public class TicTacToeGame {
 
 
     public static void main(String[] args) {
+
         helloInstruction();
         while(true) {
             selectMap();
