@@ -1,5 +1,6 @@
 package TicTacToeGame_java1;
 
+import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -27,6 +28,7 @@ public class TicTacToeGame {
             dotsToWin = selectDotsToWin();
             playRound();
             printScore();
+            printScoreToFile();
             System.out.println("Продолжить игру? Y/N >>>");
             if (!sc.next().equalsIgnoreCase("y")) {
                 System.out.println("Пока..");
@@ -132,6 +134,18 @@ public class TicTacToeGame {
         System.out.println(mode == 0 ? "Счет:   Игрок1  Игрок2  Ничья" : "Счет:   Вы      ИИ      Ничья");
         System.out.printf("         %d       %d       %d\n", gamer1Score, gamer2Score, drawScore);
         System.out.println();
+    }
+
+    private static void printScoreToFile() {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter("Score.txt", true))) {
+            if (gamer1Score + gamer2Score + drawScore == 1) {
+                out.write("\n");
+                out.write(mode == 0 ? "Счет:   Игрок1  Игрок2  Ничья\n" : "Счет:   Вы      ИИ      Ничья\n");
+            }
+            out.write(String.format("         %d       %d       %d\n", gamer1Score, gamer2Score, drawScore));
+        } catch (IOException e) {
+            System.out.println("Exp: " + e.getMessage());
+        }
     }
 
     private static void humanTurn() {
