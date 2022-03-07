@@ -9,6 +9,8 @@ public class TicTacToeGame {
 
     private static int dotsToWin = 3;
     private static int mode;
+    private static String gamer1Name;
+    private static String gamer2Name;
     private static int whoseMove;
     private static GameMap map;
     private static int countStep;
@@ -23,6 +25,8 @@ public class TicTacToeGame {
     public static void main(String[] args) {
         helloInstruction();
         mode = selectMode();
+        gamer1Name = introduceGamer(1);
+        gamer2Name = mode == 0 ? introduceGamer(2) : "ИИ";
         while (true) {
             selectMap();
             dotsToWin = selectDotsToWin();
@@ -81,7 +85,13 @@ public class TicTacToeGame {
         }
         System.out.println("Установлен режим игры с " + (mode == 1 ? "ИИ!" : "другим игроком!"));
         System.out.println();
+        sc.nextLine();
         return mode;
+    }
+
+    private static String introduceGamer(int n) {
+        System.out.println("Введите имя игрока " + n + " >>>");
+        return sc.nextLine();
     }
 
     private static void selectMap() {
@@ -131,8 +141,8 @@ public class TicTacToeGame {
     }
 
     private static void printScore() {
-        System.out.println(mode == 0 ? "Счет:   Игрок1  Игрок2  Ничья" : "Счет:   Вы      ИИ      Ничья");
-        System.out.printf("         %d       %d       %d\n", gamer1Score, gamer2Score, drawScore);
+        System.out.printf("Счет:\t\t%s\t\t%s\t\tНичья\n", gamer1Name, gamer2Name);
+        System.out.printf("\t\t\t%d\t\t\t%d\t\t\t%d\n", gamer1Score, gamer2Score, drawScore);
         System.out.println();
     }
 
@@ -140,9 +150,9 @@ public class TicTacToeGame {
         try (BufferedWriter out = new BufferedWriter(new FileWriter("Score.txt", true))) {
             if (gamer1Score + gamer2Score + drawScore == 1) {
                 out.write("\n");
-                out.write(mode == 0 ? "Счет:   Игрок1  Игрок2  Ничья\n" : "Счет:   Вы      ИИ      Ничья\n");
+                out.write(String.format("Счет:\t\t%s\t\t%s\t\tНичья\n", gamer1Name, gamer2Name));
             }
-            out.write(String.format("         %d       %d       %d\n", gamer1Score, gamer2Score, drawScore));
+            out.write(String.format("\t\t\t%d\t\t\t%d\t\t\t%d\n", gamer1Score, gamer2Score, drawScore));
         } catch (IOException e) {
             System.out.println("Exp: " + e.getMessage());
         }
