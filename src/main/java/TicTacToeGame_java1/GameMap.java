@@ -63,23 +63,20 @@ public class GameMap {
     }
 
     protected  Cell[] getD1(Cell cell) {
-        Cell[] d1=new Cell[map.length];
-        for (int i = 0; i < d1.length; i++) {
-            try {
-                d1[i]=map[i][i-(cell.rowNumber-cell.columnNumber)];
-            }
-            catch (ArrayIndexOutOfBoundsException e) {}
+        int b = cell.rowNumber-cell.columnNumber;
+        Cell[] d1 = new Cell[map.length];
+        for (int i = (b >= 0 ? b : 0); i < d1.length - (b >= 0 ? 0 : -b); i++) {
+            d1[i]= map[i][i-b];
         }
         return d1;
     }
 
     protected  Cell[] getD2(Cell cell) {
+        int b = cell.rowNumber+cell.columnNumber;
         Cell[] d2=new Cell[map.length];
-        for (int i = 0; i < d2.length; i++) {
-            try {
-                d2[i]= (map[i][cell.rowNumber+cell.columnNumber-i]);
-            }
-            catch (ArrayIndexOutOfBoundsException e) {}
+        for (int i = (b < map.length ? 0 : b - (map.length - 1));
+             i < d2.length - (b < map.length ? (map.length - 1) - b : 0); i++) {
+            d2[i]= (map[i][b-i]);
         }
         return d2;
     }
