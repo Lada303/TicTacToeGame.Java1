@@ -1,7 +1,6 @@
 package TicTacToeGame_java1;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Competition {
 
@@ -15,37 +14,38 @@ public class Competition {
     protected Competition() {
         sc = new Scanner(System.in);
         int mode = selectMode();
-        this.gamer1 = new HumanGamer(introduceGamer(1), Dots.X);
-        this.gamer2 = mode == 0 ? new HumanGamer(introduceGamer(2), Dots.O) : new AIGamer("AI", Dots.O);
+        this.gamer1 = new HumanGamer(1, introduceGamer(1), Dots.X);
+        this.gamer2 = mode == 0 ? new HumanGamer(2, introduceGamer(2), Dots.O) :
+                new AIGamer(2,"AI", Dots.O);
         this.judge = new CompetitionJudge(this);
         startNewCompetition();
     }
 
-    public Scanner getSc() {
+    protected Scanner getSc() {
         return sc;
     }
 
-    public Gamer getGamer1() {
+    protected Gamer getGamer1() {
         return gamer1;
     }
 
-    public Gamer getGamer2() {
+    protected Gamer getGamer2() {
         return gamer2;
     }
 
-    public CompetitionJudge getJudge() {
+    protected CompetitionJudge getJudge() {
         return judge;
     }
 
-    public GameMap getMap() {
+    protected GameMap getMap() {
         return map;
     }
 
-    public int getDots_to_win() {
+    protected int getDots_to_win() {
         return dots_to_win;
     }
 
-    public void startNewCompetition() {
+    private void startNewCompetition() {
         while (true) {
             map = selectMap();
             dots_to_win = selectDotsToWin();
@@ -65,6 +65,7 @@ public class Competition {
 
     private void playNewRound() {
         judge.resetCountStep();
+        judge.clearListStep();
         judge.resetWhoseMove();
         map.printMap();
         while (true) {
@@ -81,8 +82,14 @@ public class Competition {
             }
             judge.incrementCountStep();
             map.printMap();
-            if (judge.isWin(judge.getWhoseMove() == 1 ? gamer1.getCell() : gamer2.getCell())) break;
-            if (judge.isDraw()) break;
+            Cell lastCell = judge.getWhoseMove() == 1 ? gamer1.getCell() : gamer2.getCell();
+            judge.addToListStep(lastCell);
+            if (judge.isWin(lastCell)) {
+                 break;
+            }
+            if (judge.isDraw()) {
+                 break;
+            }
             judge.changeWhoseMove();
         }
     }
@@ -146,7 +153,7 @@ public class Competition {
         return dots;
     }
 
-    private static boolean isSizeNotValid(int size, int min, int max) {
+    private boolean isSizeNotValid(int size, int min, int max) {
         if (size >= min && size <= max) {
             return false;
         }

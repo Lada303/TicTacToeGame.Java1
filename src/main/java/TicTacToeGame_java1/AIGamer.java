@@ -6,8 +6,8 @@ public class AIGamer extends Gamer{
 
     private static final Random rand = new Random();
 
-    protected AIGamer(String name, Dots dots) {
-        super(name, dots);
+    protected AIGamer(int id, String name, Dots dots) {
+        super(id, name, dots);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class AIGamer extends Gamer{
         }
         map.getCell(this.getCell()).setDot(Dots.O);
         System.out.println("Компьютер походил " +
-                (this.getCell().columnNumber + 1) + " " + (this.getCell().rowNumber + 1));
+                (this.getCell().getColumnNumber() + 1) + " " + (this.getCell().getRowNumber() + 1));
         return true;
     }
 

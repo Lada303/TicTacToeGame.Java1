@@ -30,25 +30,25 @@ public class GameMap {
     }
 
     protected Cell getCell(Cell cell) {
-        return map[cell.rowNumber][cell.columnNumber];
+        return map[cell.getRowNumber()][cell.getColumnNumber()];
     }
 
     protected Cell[] getRow(Cell cell) {
         Cell[] row = new Cell[map[0].length];
-        System.arraycopy(map[cell.rowNumber], 0, row, 0, row.length);
+        System.arraycopy(map[cell.getRowNumber()], 0, row, 0, row.length);
         return row;
     }
 
     protected Cell[] getColumn(Cell cell) {
         Cell[] column = new Cell[map.length];
         for (int i = 0; i < column.length; i++) {
-            column[i] = map[i][cell.columnNumber];
+            column[i] = map[i][cell.getColumnNumber()];
         }
         return column;
     }
 
     protected Cell[] getD1(Cell cell) {
-        int b = cell.rowNumber - cell.columnNumber;
+        int b = cell.getRowNumber() - cell.getColumnNumber();
         Cell[] d1 = new Cell[map.length];
         for (int i = (b >= 0 ? b : 0); i < d1.length - (b >= 0 ? 0 : -b); i++) {
             d1[i] = map[i][i - b];
@@ -57,7 +57,7 @@ public class GameMap {
     }
 
     protected Cell[] getD2(Cell cell) {
-        int b = cell.rowNumber + cell.columnNumber;
+        int b = cell.getRowNumber() + cell.getColumnNumber();
         Cell[] d2 = new Cell[map.length];
         for (int i = (b < map.length ? 0 : b - (map.length - 1));
              i < d2.length - (b < map.length ? (map.length - 1) - b : 0); i++) {
@@ -67,13 +67,17 @@ public class GameMap {
     }
 
     protected boolean isD1(Cell cell, int lengthD) {
-        return (cell.rowNumber - (map.length - lengthD) <= cell.columnNumber
-                && cell.columnNumber <= map[0].length - lengthD + cell.rowNumber);
+        return (cell.getRowNumber() - (map.length - lengthD) <= cell.getColumnNumber()
+                && cell.getColumnNumber() <= map[0].length - lengthD + cell.getRowNumber());
     }
 
     protected boolean isD2(Cell cell, int lengthD) {
-        return (lengthD - 1 - cell.rowNumber <= cell.columnNumber
-                && cell.columnNumber <= map[0].length - 1 - cell.rowNumber + (map.length - lengthD));
+        return (lengthD - 1 - cell.getRowNumber() <= cell.getColumnNumber()
+                && cell.getColumnNumber() <= map[0].length - 1 - cell.getRowNumber() + (map.length - lengthD));
+    }
+
+    protected String getSize() {
+        return map[0].length + " " + map.length;
     }
 
     protected void printMap() {

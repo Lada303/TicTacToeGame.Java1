@@ -4,8 +4,8 @@ import java.util.InputMismatchException;
 
 public class HumanGamer extends Gamer {
 
-    protected HumanGamer(String name, Dots dots) {
-        super(name, dots);
+    protected HumanGamer(int id, String name, Dots dots) {
+        super(id, name, dots);
     }
 
     @Override

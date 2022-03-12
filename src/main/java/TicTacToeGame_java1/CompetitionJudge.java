@@ -1,8 +1,11 @@
 package TicTacToeGame_java1;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompetitionJudge {
 
@@ -11,20 +14,25 @@ public class CompetitionJudge {
     private int drawScore;
     private int whoseMove;
     private int countStep;
+    private int countFiles;
     private GameMap map;
     private int dots_to_win;
+    private final List<String> listStep;
 
     protected CompetitionJudge(Competition competition) {
         this.gamer1 = competition.getGamer1();
         this.gamer2 = competition.getGamer2();
         this.drawScore = 0;
+        this.countFiles = 0;
+        lookCounterFile();
+        this.listStep = new ArrayList<>();
     }
 
     protected int getWhoseMove() {
         return whoseMove;
     }
 
-    public void resetWhoseMove() {
+    protected void resetWhoseMove() {
         this.whoseMove = 1;
     }
 
@@ -44,12 +52,20 @@ public class CompetitionJudge {
         this.countStep = 0;
     }
 
-    public void setMap(GameMap map) {
+    protected void setMap(GameMap map) {
         this.map = map;
     }
 
-    public void setDots_to_win(int dots_to_win) {
+    protected void setDots_to_win(int dots_to_win) {
         this.dots_to_win = dots_to_win;
+    }
+
+    protected void clearListStep() {
+        listStep.clear();
+    }
+
+    protected void addToListStep(Cell lastCell) {
+        listStep.add((lastCell.getColumnNumber() + 1) + " " + (lastCell.getRowNumber() + 1));
     }
 
     protected void printScore() {
@@ -75,11 +91,13 @@ public class CompetitionJudge {
             if (lastCell.getDot() == Dots.X && checkWin(lastCell)) {
                 System.out.println("Победил игрок " + gamer1.getName() + "\n");
                 gamer1.incrementScore();
+                writeXML(1);
                 return true;
             }
             if (lastCell.getDot() == Dots.O && checkWin(lastCell)) {
                 System.out.println("Победил игрок " + gamer2.getName() + "\n");
                 gamer2.incrementScore();
+                writeXML(2);
                 return true;
             }
         }
@@ -115,8 +133,29 @@ public class CompetitionJudge {
         if (countStep >= map.getCountColumn() * map.getCountRow()) {
             System.out.println("Ничья\n");
             drawScore++;
+            writeXML(0);
             return true;
         }
         return false;
+    }
+
+    private void lookCounterFile() {
+        File file;
+        do {
+            countFiles++;
+            String name = gamer1.getName()+"VS" + gamer2.getName() + "_" + countFiles + ".xml";
+            file = new File(name);
+         } while (file.exists());
+     }
+
+    private void writeXML(int winner) {
+        StaxWriter configFile =
+                new StaxWriter(gamer1.getName()+"VS" + gamer2.getName() + "_" + countFiles + ".xml");
+        try {
+            configFile.writeXMLDocument(gamer1, gamer2, map.getSize(), listStep, winner);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        countFiles++;
     }
 }
