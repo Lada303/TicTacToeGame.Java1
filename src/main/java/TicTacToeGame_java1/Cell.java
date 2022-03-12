@@ -2,20 +2,25 @@ package TicTacToeGame_java1;
 
 public class Cell {
 
-    protected final int columnNumber;
-    protected final int rowNumber;
+    private final int columnNumber;
+    private final int rowNumber;
     private Dots dot;
 
-    protected Cell (int x, int y) {columnNumber=x; rowNumber=y; }
-    protected Cell (int x, int y, Dots dot) {columnNumber=x; rowNumber=y; this.dot=dot;}
-    protected Cell (Cell that) {
-        this.columnNumber=that.columnNumber;
-        this.rowNumber=that.rowNumber;
-        this.dot=that.dot;
+    protected Cell(int x, int y) {
+        columnNumber = x;
+        rowNumber = y;
+    }
+
+    protected int getColumnNumber() {
+        return columnNumber;
+    }
+
+    protected int getRowNumber() {
+        return rowNumber;
     }
 
     protected void setDot(Dots dot) {
-        this.dot=dot;
+        this.dot = dot;
     }
 
     protected Dots getDot() {
