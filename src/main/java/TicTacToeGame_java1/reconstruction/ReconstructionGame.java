@@ -22,8 +22,10 @@ public class ReconstructionGame {
 
         for (Object item : listReadFile) {
             if (item instanceof Step) { // print GameMap with step
-                int[] xy = adapterCoordinate.mapCoordinateConvector(((Step) item).getCellValue());
-                map[xy[1]][xy[0]] = ((Step) item).getPlayerId().equals("1") ? player1.getSymbol() : player2.getSymbol();
+                String coordinate = adapterCoordinate.mapCoordinateConvector(((Step) item).getCellValue());
+                int x = Integer.parseInt(coordinate.substring(0, 1)) - 1;
+                int y = Integer.parseInt(coordinate.substring(1)) - 1;
+                map[y][x] = ((Step) item).getPlayerId().equals("1") ? player1.getSymbol() : player2.getSymbol();
                 printMap();
                 System.out.println();
             } else { // print GameResult

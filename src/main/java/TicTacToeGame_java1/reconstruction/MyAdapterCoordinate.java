@@ -2,17 +2,14 @@ package TicTacToeGame_java1.reconstruction;
 
 public class MyAdapterCoordinate implements Adapter {
 
-    public int[] mapCoordinateConvector(String strMapCoordinate) {
+    public String mapCoordinateConvector(String strMapCoordinate) {
         String str;
         if (strMapCoordinate.length() == 1) {
              str = convector1(strMapCoordinate);
         } else {
             str = strMapCoordinate.replaceAll("[^0-9]+", "");
         }
-        int[] xy = new int[2];
-        xy[0] = Integer.parseInt(str.substring(0, 1)) - 1;
-        xy[1] = Integer.parseInt(str.substring(1)) - 1;
-        return xy;
+        return str;
     }
 
     private String convector1 (String strMapCoordinate) {
