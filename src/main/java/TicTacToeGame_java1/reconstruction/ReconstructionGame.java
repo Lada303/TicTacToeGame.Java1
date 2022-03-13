@@ -5,12 +5,12 @@ import java.util.List;
 public class ReconstructionGame {
 
     private String[][] map;
+    private Adapter adapterCoordinate;
     private Player player1;
     private Player player2;
-    private int x;
-    private int y;
 
     protected void reconstruction(List<Object> listReadFile) {
+        adapterCoordinate = new MyAdapterCoordinate();
         player1 = (Player) (listReadFile.remove(0));
         player2 = (Player) (listReadFile.remove(0));
         if (listReadFile.get(0) instanceof String) {
@@ -19,12 +19,13 @@ public class ReconstructionGame {
         } else {
             map = new String[3][3];
         }
-        x = 0;
-        y = 0;
 
         for (Object item : listReadFile) {
-            if (item instanceof Step) {
-                reconstructionStep(((Step) item));
+            if (item instanceof Step) { // print GameMap with step
+                int[] xy = adapterCoordinate.mapCoordinateConvector(((Step) item).getCellValue());
+                map[xy[1]][xy[0]] = ((Step) item).getPlayerId().equals("1") ? player1.getSymbol() : player2.getSymbol();
+                printMap();
+                System.out.println();
             } else { // print GameResult
                 if (item instanceof String) {
                     System.out.println(item);
@@ -35,20 +36,6 @@ public class ReconstructionGame {
                 break;
             }
         }
-    }
-
-    private void reconstructionStep(Step step) {
-        String strMapCoordinate = step.getCellValue();
-        if (strMapCoordinate.length() == 1) {
-            mapCoordinateConvector(strMapCoordinate);
-        } else {
-            strMapCoordinate = strMapCoordinate.replaceAll("[^0-9]+", "");
-            x = Integer.parseInt(strMapCoordinate.substring(0, 1)) - 1;
-            y = Integer.parseInt(strMapCoordinate.substring(1)) - 1;
-        }
-        map[y][x] = step.getPlayerId().equals("1") ? player1.getSymbol() : player2.getSymbol();
-        printMap();
-        System.out.println();
     }
 
     private void printMap() {
@@ -73,46 +60,5 @@ public class ReconstructionGame {
             System.out.print("----");
         }
         System.out.println();
-    }
-
-    private void mapCoordinateConvector(String strMapCoordinate) {
-        switch (strMapCoordinate) {
-            case "1" -> {
-                x = 0;
-                y = 0;
-            }
-            case "2" -> {
-                x = 1;
-                y = 0;
-            }
-            case "3" -> {
-                x = 2;
-                y = 0;
-            }
-            case "4" -> {
-                x = 0;
-                y = 1;
-            }
-            case "5" -> {
-                x = 1;
-                y = 1;
-            }
-            case "6" -> {
-                x = 2;
-                y = 1;
-            }
-            case "7" -> {
-                x = 0;
-                y = 2;
-            }
-            case "8" -> {
-                x = 1;
-                y = 2;
-            }
-            case "9" -> {
-                x = 2;
-                y = 2;
-            }
-        }
     }
 }
