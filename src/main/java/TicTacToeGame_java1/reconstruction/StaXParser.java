@@ -10,7 +10,6 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -53,12 +52,11 @@ public class StaXParser {
                 }
                 // If we reach the end of an item element, we add it to the list
                 if (event.isEndElement()) {
-                    EndElement endElement = event.asEndElement();
-                    if (!endElement.getName().getLocalPart().equals("Gameplay") &&
-                            !endElement.getName().getLocalPart().equals("Game")) {
-                        list.add(element);
-                        element = null;
+                    if (element == null) {
+                        continue;
                     }
+                    list.add(element);
+                    element = null;
                 }
             }
         } catch (FileNotFoundException | XMLStreamException e) {
