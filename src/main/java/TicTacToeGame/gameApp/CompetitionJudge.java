@@ -1,4 +1,20 @@
-package TicTacToeGame_java1;
+package TicTacToeGame.gameApp;
+
+/*
+"Судья"
+- следит за игрой (кто ходит, какой сечас шаг и т.п.)
+- определяет результаты игры (кто выграл, ничья)
+- считает очки по игроку1, игроку2 и ничьи
+- печатает очки в консоль и в фаил
+- записывает процесс игры в фаил
+*/
+
+import TicTacToeGame.gameApp.models.gamemap.Cell;
+import TicTacToeGame.gameApp.models.gamemap.Dots;
+import TicTacToeGame.gameApp.models.gamemap.GameMap;
+import TicTacToeGame.gameApp.models.gamers.Gamer;
+import TicTacToeGame.gameApp.writersfile.JacksonWriter;
+import TicTacToeGame.gameApp.writersfile.WriteGameToFile;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,63 +34,66 @@ public class CompetitionJudge {
     private GameMap map;
     private int dots_to_win;
     private final List<String> listStep;
+    private final WriteGameToFile writer;
 
-    protected CompetitionJudge(Competition competition) {
+    public CompetitionJudge(Competition competition) {
         this.gamer1 = competition.getGamer1();
         this.gamer2 = competition.getGamer2();
         this.drawScore = 0;
+        this.listStep = new ArrayList<>();
+        // тут можно поменять Writer записи файла с содержанием игры
+        this.writer = new JacksonWriter(gamer1, gamer2, listStep);
         this.countFiles = 0;
         lookCounterFile();
-        this.listStep = new ArrayList<>();
     }
 
-    protected int getWhoseMove() {
+    public int getWhoseMove() {
         return whoseMove;
     }
 
-    protected void resetWhoseMove() {
+    public void resetWhoseMove() {
         this.whoseMove = 1;
     }
 
-    protected void changeWhoseMove() {
+    public void changeWhoseMove() {
         this.whoseMove = whoseMove * (-1);
     }
 
-    protected int getCountStep() {
+    public int getCountStep() {
         return countStep;
     }
 
-    protected void incrementCountStep() {
+    public void incrementCountStep() {
         this.countStep++;
     }
 
-    protected void resetCountStep() {
+    public void resetCountStep() {
         this.countStep = 0;
     }
 
-    protected void setMap(GameMap map) {
+    public void setMap(GameMap map) {
         this.map = map;
     }
 
-    protected void setDots_to_win(int dots_to_win) {
+    public void setDots_to_win(int dots_to_win) {
         this.dots_to_win = dots_to_win;
     }
 
-    protected void clearListStep() {
+    public void clearListStep() {
         listStep.clear();
     }
 
-    protected void addToListStep(Cell lastCell) {
+    public void addToListStep(Cell lastCell) {
         listStep.add((lastCell.getColumnNumber() + 1) + " " + (lastCell.getRowNumber() + 1));
     }
 
-    protected void printScore() {
+    public void printScore() {
         System.out.printf("Счет:\t\t%s\t\t%s\t\tНичья\n", gamer1.getName(), gamer2.getName());
         System.out.printf("\t\t\t%d\t\t\t%d\t\t\t%d\n", gamer1.getScore(), gamer2.getScore(), drawScore);
         System.out.println();
     }
 
-    protected void printScoreToFile() {
+    public void printScoreToFile() {
         try (BufferedWriter out = new BufferedWriter(new FileWriter("Score.txt", true))) {
             if (gamer1.getScore() + gamer2.getScore() + drawScore == 1) {
                 out.write("\n");
@@ -86,18 +105,20 @@ public class CompetitionJudge {
         }
     }
 
-    protected boolean isWin(Cell lastCell) {
+    public boolean isWin(Cell lastCell) {
         if (countStep >= dots_to_win * 2 - 1) {
             if (lastCell.getDot() == Dots.X && checkWin(lastCell)) {
                 System.out.println("Победил игрок " + gamer1.getName() + "\n");
                 gamer1.incrementScore();
-                writeXML(1);
+                writer.writeGameToFile(countFiles, map.getSize(), 1);
+                countFiles++;
                 return true;
             }
             if (lastCell.getDot() == Dots.O && checkWin(lastCell)) {
                 System.out.println("Победил игрок " + gamer2.getName() + "\n");
                 gamer2.incrementScore();
-                writeXML(2);
+                writer.writeGameToFile(countFiles, map.getSize(), 2);
+                countFiles++;
                 return true;
             }
         }
@@ -129,11 +150,12 @@ public class CompetitionJudge {
         return counter;
     }
 
-    protected boolean isDraw() {
+    public boolean isDraw() {
         if (countStep >= map.getCountColumn() * map.getCountRow()) {
             System.out.println("Ничья\n");
             drawScore++;
-            writeXML(0);
+            writer.writeGameToFile(countFiles, map.getSize(), 0);
+            countFiles++;
             return true;
         }
         return false;
@@ -141,21 +163,11 @@ public class CompetitionJudge {
 
     private void lookCounterFile() {
         File file;
+        String end = writer.getClass().getName().contains("son") ? ".json" : ".xml";
         do {
             countFiles++;
-            String name = gamer1.getName()+"VS" + gamer2.getName() + "_" + countFiles + ".xml";
+            String name = gamer1.getName()+"Vs" + gamer2.getName() + "_" + countFiles + end;
             file = new File(name);
          } while (file.exists());
      }
-
-    private void writeXML(int winner) {
-        StaxWriter configFile =
-                new StaxWriter(gamer1.getName()+"VS" + gamer2.getName() + "_" + countFiles + ".xml");
-        try {
-            configFile.writeXMLDocument(gamer1, gamer2, map.getSize(), listStep, winner);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        countFiles++;
-    }
 }

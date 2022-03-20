@@ -1,4 +1,4 @@
-package TicTacToeGame_java1.reconstruction;
+package TicTacToeGame.reconstructionApp.models;
 
 public class Step {
     private String num;

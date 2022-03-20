@@ -1,4 +1,20 @@
-package TicTacToeGame_java1;
+package TicTacToeGame.gameApp;
+
+/*
+"Соревнование" - игру идут подряд, пока пользователь не прервет
+При создании "соревнования" определеям вид: с ИИ или другим игроком
+(инициализируются игроки и судья)
+В начале каждой игре:
+- выбираем размер поля
+- выбираем количество фишек для выгрыша
+*/
+
+import TicTacToeGame.gameApp.models.gamemap.Cell;
+import TicTacToeGame.gameApp.models.gamemap.Dots;
+import TicTacToeGame.gameApp.models.gamemap.GameMap;
+import TicTacToeGame.gameApp.models.gamers.AIGamer;
+import TicTacToeGame.gameApp.models.gamers.Gamer;
+import TicTacToeGame.gameApp.models.gamers.HumanGamer;
 
 import java.util.*;
 
@@ -11,7 +27,7 @@ public class Competition {
     private GameMap map;
     private int dots_to_win;
 
-    protected Competition() {
+    public Competition() {
         sc = new Scanner(System.in);
         int mode = selectMode();
         this.gamer1 = new HumanGamer(1, introduceGamer(1), Dots.X);
@@ -21,27 +37,27 @@ public class Competition {
         startNewCompetition();
     }
 
-    protected Scanner getSc() {
+    public Scanner getSc() {
         return sc;
     }
 
-    protected Gamer getGamer1() {
+    public Gamer getGamer1() {
         return gamer1;
     }
 
-    protected Gamer getGamer2() {
+    public Gamer getGamer2() {
         return gamer2;
     }
 
-    protected CompetitionJudge getJudge() {
+    public CompetitionJudge getJudge() {
         return judge;
     }
 
-    protected GameMap getMap() {
+    public GameMap getMap() {
         return map;
     }
 
-    protected int getDots_to_win() {
+    public int getDots_to_win() {
         return dots_to_win;
     }
 
@@ -104,7 +120,7 @@ public class Competition {
         } catch (InputMismatchException e) {
             System.out.println("Вы ввели неправильный режим. Включен режим по умолчанию - 0!");
         }
-        System.out.println("Установлен режим игры с " + (mode == 1 ? "ИИ!" : "другим игроком!"));
+        System.out.println("Установлен режим игры с " + (mode != 0 ? "ИИ!" : "другим игроком!"));
         System.out.println();
         sc.nextLine();
         return mode;

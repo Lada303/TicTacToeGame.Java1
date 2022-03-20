@@ -1,15 +1,18 @@
-package TicTacToeGame_java1;
+package TicTacToeGame.gameApp.models.gamers;
 
+import TicTacToeGame.gameApp.Competition;
+import TicTacToeGame.gameApp.models.gamemap.Dots;
+import TicTacToeGame.gameApp.models.gamemap.GameMap;
 import java.util.InputMismatchException;
 
 public class HumanGamer extends Gamer {
 
-    protected HumanGamer(int id, String name, Dots dots) {
+    public HumanGamer(int id, String name, Dots dots) {
         super(id, name, dots);
     }
 
     @Override
-    protected boolean doStep(Competition competition) {
+    public boolean doStep(Competition competition) {
         int x, y;
         try {
             do {

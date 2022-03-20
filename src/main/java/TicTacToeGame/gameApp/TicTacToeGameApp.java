@@ -1,4 +1,4 @@
-package TicTacToeGame_java1;
+package TicTacToeGame.gameApp;
 
 public class TicTacToeGameApp {
     public static void main(String[] args) {

@@ -1,10 +1,10 @@
-package TicTacToeGame_java1;
+package TicTacToeGame.gameApp.models.gamemap;
 
 public class GameMap {
 
     private final Cell[][] map;
 
-    protected GameMap(int x, int y) {
+    public GameMap(int x, int y) {
         map = new Cell[y][x];
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
@@ -13,33 +13,33 @@ public class GameMap {
         }
     }
 
-    protected boolean isCellValid(int x, int y) {
+    public boolean isCellValid(int x, int y) {
         return (0 <= x && x < map[0].length) || (0 <= y && y < map.length);
     }
 
-    protected int getCountRow() {
+    public int getCountRow() {
         return map.length;
     }
 
-    protected int getCountColumn() {
+    public int getCountColumn() {
         return map[1].length;
     }
 
-    protected Cell getCell(int x, int y) {
+    public Cell getCell(int x, int y) {
         return map[y][x];
     }
 
-    protected Cell getCell(Cell cell) {
+    public Cell getCell(Cell cell) {
         return map[cell.getRowNumber()][cell.getColumnNumber()];
     }
 
-    protected Cell[] getRow(Cell cell) {
+    public Cell[] getRow(Cell cell) {
         Cell[] row = new Cell[map[0].length];
         System.arraycopy(map[cell.getRowNumber()], 0, row, 0, row.length);
         return row;
     }
 
-    protected Cell[] getColumn(Cell cell) {
+    public Cell[] getColumn(Cell cell) {
         Cell[] column = new Cell[map.length];
         for (int i = 0; i < column.length; i++) {
             column[i] = map[i][cell.getColumnNumber()];
@@ -47,7 +47,7 @@ public class GameMap {
         return column;
     }
 
-    protected Cell[] getD1(Cell cell) {
+    public Cell[] getD1(Cell cell) {
         int b = cell.getRowNumber() - cell.getColumnNumber();
         Cell[] d1 = new Cell[map.length];
         for (int i = (b >= 0 ? b : 0); i < d1.length - (b >= 0 ? 0 : -b); i++) {
@@ -56,7 +56,7 @@ public class GameMap {
         return d1;
     }
 
-    protected Cell[] getD2(Cell cell) {
+    public Cell[] getD2(Cell cell) {
         int b = cell.getRowNumber() + cell.getColumnNumber();
         Cell[] d2 = new Cell[map.length];
         for (int i = (b < map.length ? 0 : b - (map.length - 1));
@@ -66,21 +66,21 @@ public class GameMap {
         return d2;
     }
 
-    protected boolean isD1(Cell cell, int lengthD) {
+    public boolean isD1(Cell cell, int lengthD) {
         return (cell.getRowNumber() - (map.length - lengthD) <= cell.getColumnNumber()
                 && cell.getColumnNumber() <= map[0].length - lengthD + cell.getRowNumber());
     }
 
-    protected boolean isD2(Cell cell, int lengthD) {
+    public boolean isD2(Cell cell, int lengthD) {
         return (lengthD - 1 - cell.getRowNumber() <= cell.getColumnNumber()
                 && cell.getColumnNumber() <= map[0].length - 1 - cell.getRowNumber() + (map.length - lengthD));
     }
 
-    protected String getSize() {
+    public String getSize() {
         return map[0].length + " " + map.length;
     }
 
-    protected void printMap() {
+    public void printMap() {
         System.out.print("  | ");
         for (int i = 1; i <= map[1].length; i++) {
             System.out.print(i + " | ");

@@ -1,6 +1,14 @@
-package TicTacToeGame_java1.reconstruction;
+package TicTacToeGame.reconstructionApp.convectors;
+/*
+Получает строку и возвращает координыта ячейки в нужном формате - массив из двух целых чисел Х и Y
+Переводит в координаты строки:
+- координаты представляют собой числа из 1 знака от 1..9
+- два числа записаны подря без разделителей
+- два числа разделенных любыми символами
+- если поле 3*3 и ячейки записаны под номерами 1..9
+*/
 
-public class MyAdapterCoordinate implements Adapter {
+public class MyCoordinateConvector implements CoordinateConvector {
 
     public int[] mapCoordinateConvector(String strMapCoordinate) {
         String str;

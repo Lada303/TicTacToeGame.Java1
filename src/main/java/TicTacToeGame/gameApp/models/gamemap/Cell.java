@@ -1,4 +1,4 @@
-package TicTacToeGame_java1;
+package TicTacToeGame.gameApp.models.gamemap;
 
 public class Cell {
 
@@ -6,28 +6,28 @@ public class Cell {
     private final int rowNumber;
     private Dots dot;
 
-    protected Cell(int x, int y) {
+    public Cell(int x, int y) {
         columnNumber = x;
         rowNumber = y;
     }
 
-    protected int getColumnNumber() {
+    public int getColumnNumber() {
         return columnNumber;
     }
 
-    protected int getRowNumber() {
+    public int getRowNumber() {
         return rowNumber;
     }
 
-    protected void setDot(Dots dot) {
+    public void setDot(Dots dot) {
         this.dot = dot;
     }
 
-    protected Dots getDot() {
+    public Dots getDot() {
         return dot;
     }
 
-    protected boolean isEmptyCell() {
+    public boolean isEmptyCell() {
         return dot == null;
     }
 

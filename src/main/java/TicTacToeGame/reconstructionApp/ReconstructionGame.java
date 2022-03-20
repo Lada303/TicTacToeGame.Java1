@@ -1,16 +1,25 @@
-package TicTacToeGame_java1.reconstruction;
+package TicTacToeGame.reconstructionApp;
+/*
+Производит непосредственно отрисовку процесса игры
+В этом классе можно заменить на нужный конвектор координат
+ */
+import TicTacToeGame.reconstructionApp.convectors.CoordinateConvector;
+import TicTacToeGame.reconstructionApp.convectors.MyCoordinateConvector;
+import TicTacToeGame.reconstructionApp.models.Player;
+import TicTacToeGame.reconstructionApp.models.Step;
 
 import java.util.List;
 
 public class ReconstructionGame {
 
     private String[][] map;
-    private Adapter adapterCoordinate;
+    private CoordinateConvector coordinateConvector;
     private Player player1;
     private Player player2;
 
-    protected void reconstruction(List<Object> listReadFile) {
-        adapterCoordinate = new MyAdapterCoordinate();
+    public void reconstruction(List<Object> listReadFile) {
+        // Введите нужный конвектор коорлинат
+        coordinateConvector = new MyCoordinateConvector();
         player1 = (Player) (listReadFile.remove(0));
         player2 = (Player) (listReadFile.remove(0));
         if (listReadFile.get(0) instanceof String) {
@@ -22,7 +31,7 @@ public class ReconstructionGame {
 
         for (Object item : listReadFile) {
             if (item instanceof Step) { // print GameMap with step
-                int[] xy = adapterCoordinate.mapCoordinateConvector(((Step) item).getCellValue());
+                int[] xy = coordinateConvector.mapCoordinateConvector(((Step) item).getCellValue());
                 map[xy[1]][xy[0]] = ((Step) item).getPlayerId().equals("1") ? player1.getSymbol() : player2.getSymbol();
                 printMap();
                 System.out.println();

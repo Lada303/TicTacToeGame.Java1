@@ -1,17 +1,22 @@
-package TicTacToeGame_java1;
+package TicTacToeGame.gameApp.models.gamers;
+
+import TicTacToeGame.gameApp.models.gamemap.Cell;
+import TicTacToeGame.gameApp.Competition;
+import TicTacToeGame.gameApp.models.gamemap.Dots;
+import TicTacToeGame.gameApp.models.gamemap.GameMap;
 
 import java.util.Random;
 
-public class AIGamer extends Gamer{
+public class AIGamer extends Gamer {
 
     private static final Random rand = new Random();
 
-    protected AIGamer(int id, String name, Dots dots) {
+    public AIGamer(int id, String name, Dots dots) {
         super(id, name, dots);
     }
 
     @Override
-    protected boolean doStep(Competition competition) {
+    public boolean doStep(Competition competition) {
         GameMap map = competition.getMap();
         for (int decrement = 1; decrement <  competition.getDots_to_win(); decrement++) {
             //шаг для победы
